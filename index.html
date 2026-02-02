@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>graphics.h Setup Guide</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f5f7fa;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            color: #1f2937;
+        }
+        .box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        a.button {
+            display: inline-block;
+            padding: 10px 14px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            margin: 5px 0;
+        }
+        code {
+            background: #eee;
+            padding: 3px 6px;
+            border-radius: 4px;
+        }
+        pre {
+            background: #111827;
+            color: #e5e7eb;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>graphics.h Installation Guide</h1>
+<p>This page contains all instructions to install and run <b>graphics.h</b> programs on Windows and Ubuntu.</p>
+
+<div class="box">
+<h2>📥 Required Downloads</h2>
+
+<a class="button" href="YOUR_DEVCPP_LINK" target="_blank">Download Dev C++</a><br>
+<a class="button" href="YOUR_GRAPHICS_FILES_LINK" target="_blank">Download graphics.h Files</a><br>
+
+<p>All links open in a new tab.</p>
+</div>
+
+<div class="box">
+<h2>🪟 Windows Setup (Dev C++)</h2>
+
+<ol>
+<li>Install Dev C++</li>
+<li>Open Dev C++ install folder</li>
+<li>Copy these files into the include/lib folders:
+    <ul>
+        <li>graphics.h → include</li>
+        <li>winbgim.h → include</li>
+        <li>libbgi.a → lib</li>
+    </ul>
+</li>
+<li>Open Dev C++ → Tools → Compiler Options → Linker</li>
+<li>Add this line:</li>
+</ol>
+
+<code>-lbgi -lgdi32 -lcomdlg32 -luuid -loleaut32 -lole32</code>
+
+<p>Click OK → Restart Dev C++</p>
+</div>
+
+<div class="box">
+<h2>🐧 Ubuntu Setup</h2>
+
+<p>graphics.h is not native on Linux. Use SDL or libgraph alternative.</p>
+
+<p>Install required packages:</p>
+
+<pre>
+sudo apt update
+sudo apt install libsdl2-dev
+</pre>
+
+<p>Compile example:</p>
+
+<pre>
+gcc program.c -lSDL2
+</pre>
+
+</div>
+
+<div class="box">
+<h2>▶️ Test Program</h2>
+
+<pre>
+#include &lt;graphics.h&gt;
+
+int main() {
+    int gd = DETECT, gm;
+    initgraph(&gd, &gm, "");
+    circle(200,200,50);
+    getch();
+    closegraph();
+}
+</pre>
+
+</div>
+
+<div class="box">
+<h2>❓ Troubleshooting</h2>
+
+<ul>
+<li>If graphics.h not found → check include folder</li>
+<li>If linker error → check linker flags</li>
+<li>Restart Dev C++ after setup</li>
+</ul>
+
+</div>
+
+</body>
+</html>
