@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>graphics.h Setup Guide</title>
+    <title>Computer Graphics Lab Installation Guide for Windows and Ubuntu</title>
     <meta charset="UTF-8">
     <style>
         body {
@@ -46,16 +46,14 @@
 
 <body>
 
-<h1>graphics.h Installation Guide</h1>
+<h1>Computer Graphics Lab Installation Guide for Windows and Ubuntu</h1>
 <p>This page contains all instructions to install and run <b>graphics.h</b> programs on Windows and Ubuntu.</p>
 
 <div class="box">
 <h2>📥 Required Downloads</h2>
 
-<a class="button" href="YOUR_DEVCPP_LINK" target="_blank">Download Dev C++</a><br>
-<a class="button" href="YOUR_GRAPHICS_FILES_LINK" target="_blank">Download graphics.h Files</a><br>
-
-<p>All links open in a new tab.</p>
+<a class="button" href="https://sourceforge.net/projects/orwelldevcpp/" target="_blank">Download Dev C++</a><br>
+<a class="button" href="https://drive.google.com/file/d/16xZBvFXf7yFjxwTpuyevK1KPuLgUeZFh/view" target="_blank">Download graphics.h Files</a><br>
 </div>
 
 <div class="box">
@@ -83,7 +81,7 @@
 <div class="box">
 <h2>🐧 Ubuntu Setup</h2>
 
-<p>graphics.h is not native on Linux. Use SDL or libgraph alternative.</p>
+<p>graphics.h is not native on Linux. So we will use SDL2</p>
 
 <p>Install required packages:</p>
 
@@ -92,7 +90,7 @@ sudo apt update
 sudo apt install libsdl2-dev
 </pre>
 
-<p>Compile example:</p>
+<p>How to compile:</p>
 
 <pre>
 gcc program.c -lSDL2
@@ -101,7 +99,7 @@ gcc program.c -lSDL2
 </div>
 
 <div class="box">
-<h2>▶️ Test Program</h2>
+<h2>▶️ Test Program for Windows</h2>
 
 <pre>
 #include &lt;graphics.h&gt;
@@ -118,15 +116,65 @@ int main() {
 </div>
 
 <div class="box">
-<h2>❓ Troubleshooting</h2>
+<h2>▶️ Test Program for Ubuntu</h2>
 
-<ul>
-<li>If graphics.h not found → check include folder</li>
-<li>If linker error → check linker flags</li>
-<li>Restart Dev C++ after setup</li>
-</ul>
+<pre>
+#include <SDL2/SDL.h>
+#include <math.h>
+
+    void drawCircle(SDL_Renderer *renderer, int cx, int cy, int radius) {
+        for (int w = 0; w < radius * 2; w++) {
+            for (int h = 0; h < radius * 2; h++) {
+                int dx = radius - w;
+                int dy = radius - h;
+                if ((dx*dx + dy*dy) <= (radius * radius)) {
+                    SDL_RenderDrawPoint(renderer, cx + dx, cy + dy);
+                }
+            }
+        }
+    }
+
+    int main() {
+        SDL_Init(SDL_INIT_VIDEO);
+
+        SDL_Window *window = SDL_CreateWindow(
+            "SDL Circle",
+            SDL_WINDOWPOS_CENTERED,
+            SDL_WINDOWPOS_CENTERED,
+            500, 400, 0
+        );
+
+        SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
+
+        // background black
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+
+        // circle color white
+        SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+
+        drawCircle(renderer, 250, 200, 40);
+
+        SDL_RenderPresent(renderer);
+
+        SDL_Event e;
+        int running = 1;
+        while (running) {
+            while (SDL_PollEvent(&e)) {
+                if (e.type == SDL_QUIT)
+                    running = 0;
+            }
+        }
+
+        SDL_DestroyRenderer(renderer);
+        SDL_DestroyWindow(window);
+        SDL_Quit();
+    }
+
+</pre>
 
 </div>
+
 
 </body>
 </html>
