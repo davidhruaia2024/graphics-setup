@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Computer Graphics Lab Installation Guide for Windows and Ubuntu</title>
+    <title>Computer Graphics Lab</title>
     <meta charset="UTF-8">
     <style>
         body {
@@ -181,6 +181,101 @@ int main() {
 </pre>
 
 </div>
+
+<div class="box">
+<h2>Bresenham Line Algorithm</h2>
+
+<p>The main goal is to draw a straight line on a pixel screen (like a computer display) using only integer calculations — fast and efficient. Bresenham’s algorithm helps choose the best next pixel at each step.</p>
+<div class="box">
+<h2>Core Idea </h2>
+
+<p>
+When drawing a line from left to right on a pixel screen, the computer cannot draw a perfect continuous line.
+It must choose the nearest pixel at each step.
+</p>
+
+<p><b>At each step in x, there are only two possible pixel choices:</b></p>
+
+<ul>
+<li>Go straight → (x+1, y)</li>
+<li>Go up → (x+1, y+1)</li>
+</ul>
+
+<p>
+Bresenham’s algorithm checks which of these two pixels is closer to the actual mathematical line and selects that pixel.
+</p>
+
+<p>
+Instead of using slow floating-point calculations, it uses a small integer <b>decision value</b> to choose the next pixel — which makes the algorithm very fast and efficient.
+</p>
+
+</div>
+
+<pre>
+#include &lt;SDL2/SDL.h&gt;
+#include &lt;stdlib.h&gt;
+
+void drawLine(SDL_Renderer* r, int x1, int y1, int x2, int y2) {
+    int dx = abs(x2 - x1);
+    int dy = abs(y2 - y1);
+    int sx = (x1 &lt; x2) ? 1 : -1;
+    int sy = (y1 &lt; y2) ? 1 : -1;
+    int err = dx - dy;
+
+    while (1) {
+        SDL_RenderDrawPoint(r, x1, y1);
+        if (x1 == x2 && y1 == y2) break;
+
+        int e2 = 2 * err;
+        if (e2 &gt; -dy) { err -= dy; x1 += sx; }
+        if (e2 &lt; dx) { err += dx; y1 += sy; }
+    }
+}
+
+int main() {
+    SDL_Init(SDL_INIT_VIDEO);
+
+    SDL_Window* win = SDL_CreateWindow(
+        "Bresenham Line",
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED,
+        600, 400, 0
+    );
+
+    SDL_Renderer* ren = SDL_CreateRenderer(win, -1, 0);
+
+    SDL_SetRenderDrawColor(ren, 0, 0, 0, 255);
+    SDL_RenderClear(ren);
+
+    SDL_SetRenderDrawColor(ren, 255, 255, 0, 255);
+
+    drawLine(ren, 50, 50, 500, 300);
+
+    SDL_RenderPresent(ren);
+
+    SDL_Event e;
+    int running = 1;
+    while (running) {
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_QUIT)
+                running = 0;
+        }
+    }
+
+    SDL_DestroyRenderer(ren);
+    SDL_DestroyWindow(win);
+    SDL_Quit();
+}
+</pre>
+
+<p><b>Compile:</b></p>
+<pre>gcc bresenham.c -lSDL2</pre>
+
+<p><b>Run:</b></p>
+<pre>./a.out</pre>
+
+</div>
+
 
 
 </body>
